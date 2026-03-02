@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrito de Compras - Informática</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="encabezado">
+    <div>
+      <h1>Carrito de Compras</h1>
+      <p>Productos de informática en quetzales (GTQ)</p>
+    </div>
+    <button id="temaBtn" class="boton-secundario" type="button">Cambiar tema</button>
+  </header>
+
+  <main class="contenedor-principal">
+    <section class="seccion-productos">
+      <h2>Catálogo</h2>
+      <div id="listaProductos" class="grid-productos"></div>
+    </section>
+
+    <aside class="seccion-carrito">
+      <h2>Tu carrito</h2>
+      <ul id="listaCarrito" class="lista-carrito"></ul>
+
+      <div class="resumen">
+        <p><strong>Total:</strong> <span id="total">Q0.00</span></p>
+        <div class="acciones">
+          <button id="vaciarBtn" class="boton-peligro" type="button">Vaciar carrito</button>
+        </div>
+      </div>
+
+      <form id="formPago" class="formulario-pago" novalidate>
+        <h3>Validar pago</h3>
+
+        <label for="nombre">Nombre completo</label>
+        <input id="nombre" name="nombre" type="text" placeholder="Ejemplo: Ana Pérez" required />
+
+        <label for="tarjeta">Número de tarjeta</label>
+        <input id="tarjeta" name="tarjeta" type="text" inputmode="numeric" placeholder="16 dígitos" maxlength="19" required />
+
+        <div class="fila">
+          <div>
+            <label for="expira">Expira (MM/AA)</label>
+            <input id="expira" name="expira" type="text" placeholder="09/29" maxlength="5" required />
+          </div>
+          <div>
+            <label for="cvv">CVV</label>
+            <input id="cvv" name="cvv" type="text" inputmode="numeric" placeholder="123" maxlength="4" required />
+          </div>
+        </div>
+
+        <button id="pagarBtn" class="boton-primario" type="submit">Pagar y generar PDF</button>
+        <p id="mensajePago" class="mensaje"></p>
+      </form>
+    </aside>
+  </main>
+
+  <dialog id="visorImagen" class="modal-imagen">
+    <div class="modal-contenido">
+      <button id="cerrarModal" class="cerrar-modal" type="button" aria-label="Cerrar vista previa">✕</button>
+      <img id="imagenGrande" src="" alt="Vista previa del producto" />
+      <p id="tituloImagen"></p>
+    </div>
+  </dialog>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+﻿:root {
+  --fondo: linear-gradient(140deg, #f7f9ff, #dbe8ff);
+  --fondo-tarjeta: #ffffff;
+  --texto: #1a2533;
+  --texto-suave: #495a70;
+  --primario: #0b63f6;
+  --primario-hover: #004fd0;
+  --peligro: #cc2941;
+  --borde: #d0d8e6;
+  --sombra: 0 12px 28px rgba(21, 45, 80, 0.15);
+}
+
+body[data-theme="oscuro"] {
+  --fondo: linear-gradient(140deg, #0f172a, #111827);
+  --fondo-tarjeta: #1f2937;
+  --texto: #edf2ff;
+  --texto-suave: #b7c4de;
+  --primario: #4d9cff;
+  --primario-hover: #3487f1;
+  --peligro: #ff5c77;
+  --borde: #374151;
+  --sombra: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Space Grotesk", sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+  padding: 20px;
+}
+
+.encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+.encabezado p {
+  margin-top: 6px;
+  color: var(--texto-suave);
+}
+
+.contenedor-principal {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 2fr 1fr;
+}
+
+.seccion-productos,
+.seccion-carrito {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  box-shadow: var(--sombra);
+  padding: 18px;
+}
+
+.grid-productos {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 14px;
+}
+
+.tarjeta-producto {
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--fondo-tarjeta);
+  display: flex;
+  flex-direction: column;
+}
+
+.tarjeta-producto img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  cursor: zoom-in;
+}
+
+.info-producto {
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.nombre-producto {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.precio-producto {
+  color: var(--texto-suave);
+}
+
+.boton-primario,
+.boton-secundario,
+.boton-peligro {
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 10px 12px;
+  font-family: inherit;
+}
+
+.boton-primario {
+  background: var(--primario);
+  color: #fff;
+}
+
+.boton-primario:hover {
+  background: var(--primario-hover);
+}
+
+.boton-secundario {
+  background: transparent;
+  color: var(--texto);
+  border: 1px solid var(--borde);
+}
+
+.boton-peligro {
+  background: var(--peligro);
+  color: #fff;
+}
+
+.lista-carrito {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.item-carrito {
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.item-carrito button {
+  border: 1px solid var(--borde);
+  background: transparent;
+  color: var(--texto);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+
+.resumen {
+  margin-top: 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.formulario-pago {
+  margin-top: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.formulario-pago input {
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--texto);
+  padding: 10px;
+  font-family: inherit;
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mensaje {
+  min-height: 20px;
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+}
+
+.modal-imagen {
+  border: 0;
+  border-radius: 14px;
+  padding: 0;
+  width: min(680px, 92vw);
+}
+
+.modal-imagen::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-contenido {
+  position: relative;
+  background: var(--fondo-tarjeta);
+  padding: 16px;
+}
+
+.modal-contenido img {
+  width: 100%;
+  border-radius: 10px;
+  max-height: 70vh;
+  object-fit: cover;
+}
+
+.modal-contenido p {
+  margin-top: 8px;
+  font-weight: 700;
+}
+
+.cerrar-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: 0;
+  border-radius: 999px;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .contenedor-principal {
+    grid-template-columns: 1fr;
+  }
+}
