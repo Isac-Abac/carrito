@@ -1,15 +1,21 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Configuración base del documento -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Carrito de Compras - Informática</title>
+
+  <!-- Fuente principal del proyecto -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- Hoja de estilos principal -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Encabezado con título y botón de cambio de tema -->
   <header class="encabezado">
     <div>
       <h1>Carrito de Compras</h1>
@@ -18,12 +24,15 @@
     <button id="temaBtn" class="boton-secundario" type="button">Cambiar tema</button>
   </header>
 
+  <!-- Contenedor principal: catálogo + panel del carrito -->
   <main class="contenedor-principal">
+    <!-- Sección donde JavaScript dibuja el listado de productos -->
     <section class="seccion-productos">
       <h2>Catálogo</h2>
       <div id="listaProductos" class="grid-productos"></div>
     </section>
 
+    <!-- Panel lateral del carrito y formulario de pago -->
     <aside class="seccion-carrito">
       <h2>Tu carrito</h2>
       <ul id="listaCarrito" class="lista-carrito"></ul>
@@ -35,6 +44,7 @@
         </div>
       </div>
 
+      <!-- Formulario para validar datos mínimos del pago -->
       <form id="formPago" class="formulario-pago" novalidate>
         <h3>Validar pago</h3>
 
@@ -56,20 +66,25 @@
         </div>
 
         <button id="pagarBtn" class="boton-primario" type="submit">Pagar y generar PDF</button>
-        <p id="mensajePago" class="mensaje"></p>
       </form>
     </aside>
   </main>
 
+  <!-- Modal para vista previa de imagen y especificaciones -->
   <dialog id="visorImagen" class="modal-imagen">
     <div class="modal-contenido">
-      <button id="cerrarModal" class="cerrar-modal" type="button" aria-label="Cerrar vista previa">✕</button>
+      <button id="cerrarModal" class="cerrar-modal" type="button" aria-label="Cerrar vista previa">X</button>
       <img id="imagenGrande" src="" alt="Vista previa del producto" />
       <p id="tituloImagen"></p>
+      <ul id="especificacionesImagen" class="lista-especificaciones"></ul>
     </div>
   </dialog>
 
+  <!-- Librerías externas (alertas y PDF) -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- Lógica principal del carrito -->
   <script src="app.js"></script>
 </body>
 </html>

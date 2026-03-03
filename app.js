@@ -1,36 +1,125 @@
-﻿// Catálogo base de productos con precio en quetzales e imagen para la vista previa.
+﻿// Catálogo de productos de informática.
+// Cada producto incluye: id, nombre, precio, imagen y lista de especificaciones técnicas.
 const productos = [
-  { id: 1, nombre: "Laptop Gamer", precio: 7899, imagen: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=900&q=80" },
-  { id: 2, nombre: "Teclado Mecánico", precio: 649, imagen: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=900&q=80" },
-  { id: 3, nombre: "Mouse Inalámbrico", precio: 299, imagen: "https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=80" },
-  { id: 4, nombre: "Monitor 27\"", precio: 1899, imagen: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=900&q=80" },
-  { id: 5, nombre: "SSD 1TB", precio: 899, imagen: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=900&q=80" },
-  { id: 6, nombre: "Auriculares RGB", precio: 459, imagen: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=900&q=80" }
+  {
+    id: 1,
+    nombre: "Laptop Gamer",
+    precio: 7899,
+    imagen: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["CPU Ryzen 7", "RAM 16 GB DDR5", "SSD NVMe 1 TB", "GPU RTX 4060"]
+  },
+  {
+    id: 2,
+    nombre: "Teclado Mecánico",
+    precio: 649,
+    imagen: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["Switch Red", "Iluminación RGB", "Formato TKL", "Conexión USB-C"]
+  },
+  {
+    id: 3,
+    nombre: "Mouse Inalámbrico",
+    precio: 299,
+    imagen: "https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["Sensor 12,000 DPI", "2.4 GHz + Bluetooth", "Batería recargable", "6 botones"]
+  },
+  {
+    id: 4,
+    nombre: "Monitor 27\"",
+    precio: 1899,
+    imagen: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["Panel IPS", "Resolución 2K", "Frecuencia 165 Hz", "Tiempo de respuesta 1 ms"]
+  },
+  {
+    id: 5,
+    nombre: "SSD 1TB",
+    precio: 899,
+    imagen: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["PCIe 4.0", "Lectura 7000 MB/s", "Escritura 5000 MB/s", "Formato M.2"]
+  },
+  {
+    id: 6,
+    nombre: "Auriculares RGB",
+    precio: 459,
+    imagen: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["Audio 7.1", "Micrófono desmontable", "Iluminación RGB", "Conector 3.5mm + USB"]
+  },
+  {
+    id: 7,
+    nombre: "Webcam Full HD",
+    precio: 349,
+    imagen: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["Resolución 1080p", "30 FPS", "Micrófono integrado", "Enfoque automático"]
+  },
+  {
+    id: 8,
+    nombre: "Router Wi-Fi 6",
+    precio: 999,
+    imagen: "https://images.unsplash.com/photo-1647427060118-4911c9821b82?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["Doble banda", "Velocidad AX3000", "4 antenas externas", "Puerto Gigabit"]
+  },
+  {
+    id: 9,
+    nombre: "Memoria RAM 16GB",
+    precio: 529,
+    imagen: "https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["DDR4", "3200 MHz", "Disipador aluminio", "Compatibilidad XMP"]
+  },
+  {
+    id: 10,
+    nombre: "Base Refrigerante",
+    precio: 279,
+    imagen: "https://images.unsplash.com/photo-1597852074816-d933c7d2b988?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["2 ventiladores", "Velocidad ajustable", "5 niveles de altura", "Alimentación USB"]
+  }
 ];
 
 // Estado principal del carrito con persistencia en localStorage.
-let carrito = JSON.parse(localStorage.getItem("carrito-informatica")) || [];
+// Se usa try/catch para evitar que un JSON corrupto rompa la aplicación al iniciar.
+let carrito = [];
+try {
+  carrito = JSON.parse(localStorage.getItem("carrito-informatica")) || [];
+} catch (error) {
+  carrito = [];
+}
 
+// Referencias a elementos del DOM.
 const listaProductos = document.getElementById("listaProductos");
 const listaCarrito = document.getElementById("listaCarrito");
 const totalSpan = document.getElementById("total");
 const vaciarBtn = document.getElementById("vaciarBtn");
 const formPago = document.getElementById("formPago");
-const mensajePago = document.getElementById("mensajePago");
 const temaBtn = document.getElementById("temaBtn");
 const visorImagen = document.getElementById("visorImagen");
 const imagenGrande = document.getElementById("imagenGrande");
 const tituloImagen = document.getElementById("tituloImagen");
+const especificacionesImagen = document.getElementById("especificacionesImagen");
 const cerrarModal = document.getElementById("cerrarModal");
 
-// Formateador de moneda para mostrar quetzales de forma correcta.
+// Formateador de moneda para mostrar quetzales de forma local.
 const monedaGT = new Intl.NumberFormat("es-GT", {
   style: "currency",
   currency: "GTQ"
 });
 
-// Renderiza todas las tarjetas de productos con botón para agregar al carrito.
+// Centraliza todas las alertas de la app.
+// Si SweetAlert2 no está disponible, se usa alert() como respaldo.
+function mostrarAlerta(icono, titulo, texto) {
+  if (window.Swal) {
+    Swal.fire({
+      icon: icono,
+      title: titulo,
+      text: texto,
+      confirmButtonText: "Entendido"
+    });
+    return;
+  }
+
+  alert(`${titulo}: ${texto}`);
+}
+
+// Renderiza las tarjetas de productos con imagen, precio y especificación principal.
 function renderProductos() {
+  if (!listaProductos) return;
   listaProductos.innerHTML = "";
 
   productos.forEach((producto) => {
@@ -41,6 +130,7 @@ function renderProductos() {
       <img src="${producto.imagen}" alt="${producto.nombre}" data-id="${producto.id}" />
       <div class="info-producto">
         <p class="nombre-producto">${producto.nombre}</p>
+        <p class="detalle-producto">${producto.especificaciones[0]}</p>
         <p class="precio-producto">${monedaGT.format(producto.precio)}</p>
         <button class="boton-primario" data-agregar="${producto.id}">Agregar al carrito</button>
       </div>
@@ -68,6 +158,8 @@ function obtenerCarritoAgrupado() {
 
 // Dibuja el carrito con opción de quitar una unidad por producto.
 function renderCarrito() {
+  if (!listaCarrito || !totalSpan) return;
+
   listaCarrito.innerHTML = "";
   const carritoAgrupado = obtenerCarritoAgrupado();
 
@@ -110,6 +202,7 @@ function agregarAlCarrito(idProducto) {
 
   carrito.push(producto);
   sincronizarCarrito();
+  mostrarAlerta("success", "Producto agregado", `${producto.nombre} fue agregado al carrito.`);
 }
 
 // Elimina una unidad del producto seleccionado del carrito.
@@ -117,8 +210,10 @@ function eliminarDelCarrito(idProducto) {
   const indice = carrito.findIndex((item) => item.id === idProducto);
   if (indice === -1) return;
 
+  const productoQuitado = carrito[indice];
   carrito.splice(indice, 1);
   sincronizarCarrito();
+  mostrarAlerta("info", "Producto eliminado", `${productoQuitado.nombre} fue quitado del carrito.`);
 }
 
 // Aplica y guarda tema claro/oscuro para mantener preferencia del usuario.
@@ -134,14 +229,28 @@ function alternarTema() {
   localStorage.setItem("tema-carrito", nuevo);
 }
 
-// Muestra imagen grande del producto para cumplir la vista previa solicitada.
+// Muestra imagen grande del producto y sus especificaciones técnicas.
 function abrirVistaPrevia(idProducto) {
   const producto = productos.find((item) => item.id === idProducto);
-  if (!producto) return;
+  if (!producto || !imagenGrande || !tituloImagen || !especificacionesImagen || !visorImagen) return;
 
   imagenGrande.src = producto.imagen;
   tituloImagen.textContent = `${producto.nombre} - ${monedaGT.format(producto.precio)}`;
-  visorImagen.showModal();
+
+  especificacionesImagen.innerHTML = "";
+  producto.especificaciones.forEach((especificacion) => {
+    const item = document.createElement("li");
+    item.textContent = especificacion;
+    especificacionesImagen.appendChild(item);
+  });
+
+  if (typeof visorImagen.showModal === "function") {
+    visorImagen.showModal();
+    return;
+  }
+
+  // Respaldo para navegadores sin soporte para <dialog>.
+  window.open(producto.imagen, "_blank");
 }
 
 // Valida campos básicos del formulario de pago y devuelve mensaje de error si aplica.
@@ -171,6 +280,10 @@ function validarPago(formData) {
 
 // Genera un recibo PDF simple con fecha, listado de productos y total pagado.
 function generarReciboPDF(nombreCliente) {
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    throw new Error("No se pudo cargar la librería de PDF.");
+  }
+
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   const fecha = new Date().toLocaleString("es-GT");
@@ -197,48 +310,77 @@ function generarReciboPDF(nombreCliente) {
 }
 
 // Delegación de eventos para botones de agregar, quitar y vista previa por imagen.
-listaProductos.addEventListener("click", (event) => {
-  const idAgregar = Number(event.target.dataset.agregar);
-  const idImagen = Number(event.target.dataset.id);
+if (listaProductos) {
+  listaProductos.addEventListener("click", (event) => {
+    const idAgregar = Number(event.target.dataset.agregar);
+    const idImagen = Number(event.target.dataset.id);
 
-  if (idAgregar) agregarAlCarrito(idAgregar);
-  if (idImagen) abrirVistaPrevia(idImagen);
-});
+    if (idAgregar) agregarAlCarrito(idAgregar);
+    if (idImagen) abrirVistaPrevia(idImagen);
+  });
+}
 
-listaCarrito.addEventListener("click", (event) => {
-  const idEliminar = Number(event.target.dataset.eliminar);
-  if (idEliminar) eliminarDelCarrito(idEliminar);
-});
+if (listaCarrito) {
+  listaCarrito.addEventListener("click", (event) => {
+    const idEliminar = Number(event.target.dataset.eliminar);
+    if (idEliminar) eliminarDelCarrito(idEliminar);
+  });
+}
 
-vaciarBtn.addEventListener("click", () => {
-  carrito = [];
-  sincronizarCarrito();
-  mensajePago.textContent = "Carrito vaciado correctamente.";
-});
+if (vaciarBtn) {
+  vaciarBtn.addEventListener("click", () => {
+    if (!carrito.length) {
+      mostrarAlerta("warning", "Carrito vacío", "No hay productos para vaciar.");
+      return;
+    }
 
-formPago.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const formData = new FormData(formPago);
-  const error = validarPago(formData);
+    carrito = [];
+    sincronizarCarrito();
+    mostrarAlerta("success", "Carrito vaciado", "Todos los productos fueron eliminados.");
+  });
+}
 
-  if (error) {
-    mensajePago.textContent = error;
-    return;
-  }
+if (formPago) {
+  formPago.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(formPago);
+    const error = validarPago(formData);
 
-  const nombreCliente = formData.get("nombre").trim();
-  generarReciboPDF(nombreCliente);
-  mensajePago.textContent = "Pago validado. Se generó tu recibo en PDF.";
-  carrito = [];
-  sincronizarCarrito();
-  formPago.reset();
-});
+    if (error) {
+      mostrarAlerta("error", "Error de validación", error);
+      return;
+    }
 
-temaBtn.addEventListener("click", alternarTema);
-cerrarModal.addEventListener("click", () => visorImagen.close());
-visorImagen.addEventListener("click", (event) => {
-  if (event.target === visorImagen) visorImagen.close();
-});
+    const nombreCliente = formData.get("nombre").trim();
+    try {
+      generarReciboPDF(nombreCliente);
+      mostrarAlerta("success", "Pago validado", "Se generó tu recibo en PDF correctamente.");
+      carrito = [];
+      sincronizarCarrito();
+      formPago.reset();
+    } catch (error) {
+      mostrarAlerta("error", "Error al generar PDF", error.message);
+    }
+  });
+}
+
+if (temaBtn) {
+  temaBtn.addEventListener("click", alternarTema);
+}
+
+if (cerrarModal && visorImagen) {
+  cerrarModal.addEventListener("click", () => {
+    if (typeof visorImagen.close === "function") {
+      visorImagen.close();
+    }
+  });
+
+  visorImagen.addEventListener("click", (event) => {
+    if (event.target === visorImagen && typeof visorImagen.close === "function") {
+      visorImagen.close();
+    }
+  });
+}
 
 // Inicio de la app: tema, catálogo y carrito guardado.
 inicializarTema();

@@ -1,4 +1,5 @@
-﻿:root {
+﻿/* Variables de color y sombra para tema claro */
+:root {
   --fondo: linear-gradient(140deg, #f7f9ff, #dbe8ff);
   --fondo-tarjeta: #ffffff;
   --texto: #1a2533;
@@ -10,11 +11,12 @@
   --sombra: 0 12px 28px rgba(21, 45, 80, 0.15);
 }
 
+/* Sobrescritura de variables para tema oscuro */
 body[data-theme="oscuro"] {
   --fondo: linear-gradient(140deg, #0f172a, #111827);
   --fondo-tarjeta: #1f2937;
   --texto: #edf2ff;
-  --texto-suave: #b7c4de;
+  --texto-suave: #ffffff;
   --primario: #4d9cff;
   --primario-hover: #3487f1;
   --peligro: #ff5c77;
@@ -22,10 +24,12 @@ body[data-theme="oscuro"] {
   --sombra: 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
+/* Ajuste global del box-model */
 * {
   box-sizing: border-box;
 }
 
+/* Base del documento */
 body {
   margin: 0;
   min-height: 100vh;
@@ -35,6 +39,7 @@ body {
   padding: 20px;
 }
 
+/* Barra superior */
 .encabezado {
   display: flex;
   justify-content: space-between;
@@ -43,6 +48,7 @@ body {
   margin-bottom: 20px;
 }
 
+/* Limpieza de márgenes en elementos de texto */
 h1,
 h2,
 h3,
@@ -55,12 +61,14 @@ p {
   color: var(--texto-suave);
 }
 
+/* Layout principal de 2 columnas */
 .contenedor-principal {
   display: grid;
   gap: 18px;
   grid-template-columns: 2fr 1fr;
 }
 
+/* Tarjetas contenedoras de cada sección */
 .seccion-productos,
 .seccion-carrito {
   background: var(--fondo-tarjeta);
@@ -70,6 +78,7 @@ p {
   padding: 18px;
 }
 
+/* Grid de productos responsive */
 .grid-productos {
   margin-top: 14px;
   display: grid;
@@ -77,6 +86,7 @@ p {
   gap: 14px;
 }
 
+/* Tarjeta individual de producto */
 .tarjeta-producto {
   border: 1px solid var(--borde);
   border-radius: 14px;
@@ -104,10 +114,16 @@ p {
   font-weight: 700;
 }
 
+.detalle-producto {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
 .precio-producto {
   color: var(--texto-suave);
 }
 
+/* Estilo base para botones */
 .boton-primario,
 .boton-secundario,
 .boton-peligro {
@@ -139,6 +155,7 @@ p {
   color: #fff;
 }
 
+/* Lista visual del carrito */
 .lista-carrito {
   margin: 12px 0 0;
   padding: 0;
@@ -165,12 +182,14 @@ p {
   padding: 6px 8px;
 }
 
+/* Zona de total y acciones */
 .resumen {
   margin-top: 14px;
   display: grid;
   gap: 8px;
 }
 
+/* Formulario de pago */
 .formulario-pago {
   margin-top: 16px;
   display: grid;
@@ -192,12 +211,7 @@ p {
   gap: 10px;
 }
 
-.mensaje {
-  min-height: 20px;
-  color: var(--texto-suave);
-  font-size: 0.95rem;
-}
-
+/* Modal de vista previa */
 .modal-imagen {
   border: 0;
   border-radius: 14px;
@@ -227,6 +241,19 @@ p {
   font-weight: 700;
 }
 
+/* Lista de especificaciones técnicas mostrada en la vista previa */
+.lista-especificaciones {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: var(--texto-suave);
+  display: grid;
+  gap: 4px;
+}
+
+.lista-especificaciones li {
+  line-height: 1.25;
+}
+
 .cerrar-modal {
   position: absolute;
   top: 10px;
@@ -238,6 +265,7 @@ p {
   cursor: pointer;
 }
 
+/* Ajustes para móviles */
 @media (max-width: 900px) {
   .contenedor-principal {
     grid-template-columns: 1fr;
