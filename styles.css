@@ -42,6 +42,7 @@ body {
   background: var(--fondo);
   color: var(--texto);
   padding: 22px;
+  background-attachment: fixed;
 }
 
 h1,
@@ -78,6 +79,38 @@ body[data-theme="claro"] .encabezado {
   color: var(--texto-suave);
 }
 
+/* Controles superiores: selector de moneda y botón de tema */
+.controles-superiores {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.etiqueta-moneda {
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+.selector-moneda {
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: rgba(10, 20, 35, 0.8);
+  color: var(--texto);
+  padding: 9px 12px;
+  font-family: inherit;
+  font-weight: 700;
+}
+
+body[data-theme="claro"] .selector-moneda {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.tipo-cambio-info {
+  margin: -8px 0 14px;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
 /* Estructura principal */
 .contenedor-principal {
   display: grid;
@@ -102,6 +135,10 @@ body[data-theme="claro"] .encabezado {
 .seccion-carrito {
   background: var(--fondo-panel);
   box-shadow: var(--sombra), var(--resplandor);
+  position: sticky;
+  top: 14px;
+  max-height: calc(100vh - 28px);
+  overflow: auto;
 }
 
 /* Catálogo en grilla */
@@ -120,6 +157,8 @@ body[data-theme="claro"] .encabezado {
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  opacity: 0;
+  animation: entradaTarjeta 0.45s ease forwards;
 }
 
 body[data-theme="claro"] .tarjeta-producto {
@@ -188,6 +227,7 @@ body[data-theme="claro"] .boton-primario {
 
 .boton-primario:hover {
   background: linear-gradient(135deg, var(--primario-hover), var(--primario));
+  transform: translateY(-1px);
 }
 
 .boton-secundario {
@@ -263,7 +303,8 @@ body[data-theme="claro"] .formulario-pago input {
   background: rgba(255, 255, 255, 0.75);
 }
 
-.formulario-pago input:focus {
+.formulario-pago input:focus,
+.selector-moneda:focus {
   outline: none;
   border-color: var(--borde-fuerte);
   box-shadow: 0 0 0 2px rgba(0, 194, 255, 0.16);
@@ -336,6 +377,17 @@ body[data-theme="claro"] .modal-contenido {
   font-weight: 700;
 }
 
+@keyframes entradaTarjeta {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   body {
@@ -347,7 +399,17 @@ body[data-theme="claro"] .modal-contenido {
     align-items: flex-start;
   }
 
+  .controles-superiores {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
   .contenedor-principal {
     grid-template-columns: 1fr;
+  }
+
+  .seccion-carrito {
+    position: static;
+    max-height: none;
   }
 }

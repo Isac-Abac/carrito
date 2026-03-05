@@ -19,10 +19,18 @@
   <header class="encabezado">
     <div>
       <h1>Carrito de Compras</h1>
-      <p>Productos de informática en quetzales (GTQ)</p>
+      <p>Productos de informática con conversión GTQ / USD</p>
     </div>
-    <button id="temaBtn" class="boton-secundario" type="button">Cambiar tema</button>
+    <div class="controles-superiores">
+      <label for="monedaSelect" class="etiqueta-moneda">Moneda</label>
+      <select id="monedaSelect" class="selector-moneda">
+        <option value="GTQ">GTQ</option>
+        <option value="USD">USD</option>
+      </select>
+      <button id="temaBtn" class="boton-secundario" type="button">Cambiar tema</button>
+    </div>
   </header>
+  <p id="tipoCambioInfo" class="tipo-cambio-info"></p>
 
   <!-- Contenedor principal: catálogo + panel del carrito -->
   <main class="contenedor-principal">
@@ -52,16 +60,16 @@
         <input id="nombre" name="nombre" type="text" placeholder="Ejemplo: Ana Pérez" required />
 
         <label for="tarjeta">Número de tarjeta</label>
-        <input id="tarjeta" name="tarjeta" type="text" inputmode="numeric" placeholder="16 dígitos" maxlength="19" required />
+        <input id="tarjeta" name="tarjeta" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000" maxlength="19" required />
 
         <div class="fila">
           <div>
             <label for="expira">Expira (MM/AA)</label>
-            <input id="expira" name="expira" type="text" placeholder="09/29" maxlength="5" required />
+            <input id="expira" name="expira" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/AA" maxlength="5" required />
           </div>
           <div>
             <label for="cvv">CVV</label>
-            <input id="cvv" name="cvv" type="text" inputmode="numeric" placeholder="123" maxlength="4" required />
+            <input id="cvv" name="cvv" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="4" required />
           </div>
         </div>
 

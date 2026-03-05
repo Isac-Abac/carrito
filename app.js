@@ -70,6 +70,41 @@ const productos = [
     precio: 279,
     imagen: "https://images.unsplash.com/photo-1597852074816-d933c7d2b988?auto=format&fit=crop&w=900&q=80",
     especificaciones: ["2 ventiladores", "Velocidad ajustable", "5 niveles de altura", "Alimentación USB"]
+  },
+  {
+    id: 11,
+    nombre: "Silla Gamer",
+    precio: 1499,
+    imagen: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["Reclinable 180°", "Soporte lumbar", "Pistón clase 4", "Estructura metálica"]
+  },
+  {
+    id: 12,
+    nombre: "Control Inalámbrico",
+    precio: 549,
+    imagen: "https://images.unsplash.com/photo-1592840062661-7be24ad74e20?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["Bluetooth 5.0", "Vibración dual", "Batería 12h", "Compatible PC/Consola"]
+  },
+  {
+    id: 13,
+    nombre: "Microfono USB",
+    precio: 629,
+    imagen: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["Patrón cardioide", "Plug & Play", "Brazo articulado", "Cancelación de ruido"]
+  },
+  {
+    id: 14,
+    nombre: "Tarjeta Grafica",
+    precio: 4299,
+    imagen: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["8 GB GDDR6", "Ray Tracing", "PCIe 4.0", "Triple ventilador"]
+  },
+  {
+    id: 15,
+    nombre: "UPS 1200VA",
+    precio: 1099,
+    imagen: "https://images.unsplash.com/photo-1622630998477-20aa696ecb05?auto=format&fit=crop&w=900&q=80",
+    especificaciones: ["Respaldo de energía", "Protección de voltaje", "8 tomas", "Pantalla LCD"]
   }
 ];
 
@@ -88,6 +123,11 @@ const listaCarrito = document.getElementById("listaCarrito");
 const totalSpan = document.getElementById("total");
 const vaciarBtn = document.getElementById("vaciarBtn");
 const formPago = document.getElementById("formPago");
+const monedaSelect = document.getElementById("monedaSelect");
+const tipoCambioInfo = document.getElementById("tipoCambioInfo");
+const tarjetaInput = document.getElementById("tarjeta");
+const expiraInput = document.getElementById("expira");
+const cvvInput = document.getElementById("cvv");
 const temaBtn = document.getElementById("temaBtn");
 const visorImagen = document.getElementById("visorImagen");
 const imagenGrande = document.getElementById("imagenGrande");
@@ -95,26 +135,96 @@ const tituloImagen = document.getElementById("tituloImagen");
 const especificacionesImagen = document.getElementById("especificacionesImagen");
 const cerrarModal = document.getElementById("cerrarModal");
 
-// Formateador de moneda para mostrar quetzales de forma local.
-const monedaGT = new Intl.NumberFormat("es-GT", {
-  style: "currency",
-  currency: "GTQ"
-});
+// Configuración de moneda: los precios base se almacenan en GTQ y se convierten a USD.
+const TIPO_CAMBIO_USD = 7.8;
+let monedaActual = localStorage.getItem("moneda-carrito") || "GTQ";
 
-// Centraliza todas las alertas de la app.
-// Si SweetAlert2 no está disponible, se usa alert() como respaldo.
+function obtenerFormateadorMoneda() {
+  if (monedaActual === "USD") {
+    return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+  }
+  return new Intl.NumberFormat("es-GT", { style: "currency", currency: "GTQ" });
+}
+
+function convertirDesdeGTQ(valorGTQ) {
+  if (monedaActual === "USD") return valorGTQ / TIPO_CAMBIO_USD;
+  return valorGTQ;
+}
+
+function formatearMoneda(valorGTQ) {
+  return obtenerFormateadorMoneda().format(convertirDesdeGTQ(valorGTQ));
+}
+
+function actualizarInfoMoneda() {
+  if (!tipoCambioInfo) return;
+  tipoCambioInfo.textContent = monedaActual === "USD"
+    ? `Moneda actual: USD (tipo de cambio referencial 1 USD = Q${TIPO_CAMBIO_USD.toFixed(2)})`
+    : "Moneda actual: GTQ (precios base del catálogo)";
+}
+
+function inicializarMoneda() {
+  if (!monedaSelect) return;
+  monedaSelect.value = monedaActual;
+  actualizarInfoMoneda();
+
+  monedaSelect.addEventListener("change", () => {
+    monedaActual = monedaSelect.value === "USD" ? "USD" : "GTQ";
+    localStorage.setItem("moneda-carrito", monedaActual);
+    actualizarInfoMoneda();
+    renderProductos();
+    renderCarrito();
+  });
+}
+
+// Centraliza todas las alertas con SweetAlert2.
+// Si la librería no carga, se registra el error para diagnóstico.
 function mostrarAlerta(icono, titulo, texto) {
-  if (window.Swal) {
-    Swal.fire({
-      icon: icono,
-      title: titulo,
-      text: texto,
-      confirmButtonText: "Entendido"
-    });
+  if (!window.Swal) {
+    console.error("SweetAlert2 no está disponible en este momento.");
     return;
   }
 
-  alert(`${titulo}: ${texto}`);
+  Swal.fire({
+    icon: icono,
+    title: titulo,
+    text: texto,
+    confirmButtonText: "Entendido"
+  });
+}
+
+// Limpia caracteres no numéricos y aplica un límite de dígitos.
+function limpiarSoloDigitos(valor, limite) {
+  return String(valor ?? "").replace(/\D/g, "").slice(0, limite);
+}
+
+// Aplica máscara al número de tarjeta en grupos de 4 dígitos.
+function formatearTarjeta(valor) {
+  const digitos = limpiarSoloDigitos(valor, 16);
+  return digitos.replace(/(\d{4})(?=\d)/g, "$1 ").trim();
+}
+
+// Aplica máscara MM/AA tomando solamente 4 dígitos numéricos.
+function formatearExpira(valor) {
+  const digitos = limpiarSoloDigitos(valor, 4);
+  if (digitos.length <= 2) return digitos;
+  return `${digitos.slice(0, 2)}/${digitos.slice(2)}`;
+}
+
+// Configura restricciones de entrada para evitar letras y excedentes de dígitos.
+function inicializarFormatoCamposPago() {
+  if (!tarjetaInput || !expiraInput || !cvvInput) return;
+
+  tarjetaInput.addEventListener("input", () => {
+    tarjetaInput.value = formatearTarjeta(tarjetaInput.value);
+  });
+
+  expiraInput.addEventListener("input", () => {
+    expiraInput.value = formatearExpira(expiraInput.value);
+  });
+
+  cvvInput.addEventListener("input", () => {
+    cvvInput.value = limpiarSoloDigitos(cvvInput.value, 4);
+  });
 }
 
 // Renderiza las tarjetas de productos con imagen, precio y especificación principal.
@@ -122,16 +232,17 @@ function renderProductos() {
   if (!listaProductos) return;
   listaProductos.innerHTML = "";
 
-  productos.forEach((producto) => {
+  productos.forEach((producto, indice) => {
     const tarjeta = document.createElement("article");
     tarjeta.className = "tarjeta-producto";
+    tarjeta.style.animationDelay = `${indice * 45}ms`;
 
     tarjeta.innerHTML = `
       <img src="${producto.imagen}" alt="${producto.nombre}" data-id="${producto.id}" />
       <div class="info-producto">
         <p class="nombre-producto">${producto.nombre}</p>
         <p class="detalle-producto">${producto.especificaciones[0]}</p>
-        <p class="precio-producto">${monedaGT.format(producto.precio)}</p>
+        <p class="precio-producto">${formatearMoneda(producto.precio)}</p>
         <button class="boton-primario" data-agregar="${producto.id}">Agregar al carrito</button>
       </div>
     `;
@@ -165,7 +276,7 @@ function renderCarrito() {
 
   if (!carritoAgrupado.length) {
     listaCarrito.innerHTML = "<li>Tu carrito está vacío.</li>";
-    totalSpan.textContent = monedaGT.format(0);
+    totalSpan.textContent = formatearMoneda(0);
     return;
   }
 
@@ -177,7 +288,7 @@ function renderCarrito() {
     fila.innerHTML = `
       <div>
         <strong>${item.nombre}</strong><br />
-        Cantidad: ${item.cantidad} · Subtotal: ${monedaGT.format(subtotal)}
+        Cantidad: ${item.cantidad} · Subtotal: ${formatearMoneda(subtotal)}
       </div>
       <button type="button" data-eliminar="${item.id}">Quitar</button>
     `;
@@ -186,7 +297,7 @@ function renderCarrito() {
   });
 
   const total = carrito.reduce((acc, item) => acc + item.precio, 0);
-  totalSpan.textContent = monedaGT.format(total);
+  totalSpan.textContent = formatearMoneda(total);
 }
 
 // Guarda el carrito y actualiza la interfaz cada vez que hay cambios.
@@ -238,7 +349,7 @@ function abrirVistaPrevia(idProducto) {
   imagenGrande.alt = `Imagen de ${producto.nombre}`;
   // CORRECCION DEL TITULO: se fuerza el nombre/precio del producto seleccionado
   // para evitar que el encabezado de la vista previa quede ambiguo o no coincida.
-  tituloImagen.textContent = `Producto: ${producto.nombre} | Precio: ${monedaGT.format(producto.precio)}`;
+  tituloImagen.textContent = `Producto: ${producto.nombre} | Precio: ${formatearMoneda(producto.precio)}`;
 
   especificacionesImagen.innerHTML = "";
   producto.especificaciones.forEach((especificacion) => {
@@ -259,9 +370,9 @@ function abrirVistaPrevia(idProducto) {
 // Valida campos básicos del formulario de pago y devuelve mensaje de error si aplica.
 function validarPago(formData) {
   const nombre = formData.get("nombre").trim();
-  const tarjeta = formData.get("tarjeta").replace(/\s+/g, "");
-  const expira = formData.get("expira").trim();
-  const cvv = formData.get("cvv").trim();
+  const tarjeta = limpiarSoloDigitos(formData.get("tarjeta"), 16);
+  const expira = formatearExpira(formData.get("expira"));
+  const cvv = limpiarSoloDigitos(formData.get("cvv"), 4);
 
   if (!carrito.length) return "Debes agregar productos antes de pagar.";
   if (nombre.length < 5) return "Ingresa un nombre completo válido.";
@@ -281,7 +392,7 @@ function validarPago(formData) {
   return "";
 }
 
-// Genera un recibo PDF simple con fecha, listado de productos y total pagado.
+// Genera un recibo PDF con encabezado visual, tabla y total destacado.
 function generarReciboPDF(nombreCliente) {
   if (!window.jspdf || !window.jspdf.jsPDF) {
     throw new Error("No se pudo cargar la librería de PDF.");
@@ -291,23 +402,56 @@ function generarReciboPDF(nombreCliente) {
   const doc = new jsPDF();
   const fecha = new Date().toLocaleString("es-GT");
   const carritoAgrupado = obtenerCarritoAgrupado();
+  const total = carrito.reduce((acc, item) => acc + item.precio, 0);
 
-  doc.setFontSize(16);
-  doc.text("Recibo de compra - Carrito de Informática", 14, 20);
+  // Encabezado principal con color para una mejor presentación visual.
+  doc.setFillColor(10, 34, 66);
+  doc.rect(0, 0, 210, 32, "F");
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(17);
+  doc.text("RECIBO DE COMPRA", 14, 15);
   doc.setFontSize(11);
-  doc.text(`Cliente: ${nombreCliente}`, 14, 30);
-  doc.text(`Fecha: ${fecha}`, 14, 36);
+  doc.text("Carrito de Informatica", 14, 23);
+  doc.text(`Moneda: ${monedaActual}`, 140, 23);
 
-  let y = 48;
+  // Datos del cliente y fecha.
+  doc.setTextColor(33, 37, 41);
+  doc.setFontSize(11);
+  doc.text(`Cliente: ${nombreCliente}`, 14, 42);
+  doc.text(`Fecha: ${fecha}`, 14, 48);
+  doc.text(`No. Recibo: RC-${Date.now().toString().slice(-6)}`, 14, 54);
+
+  // Cabecera de tabla.
+  let y = 66;
+  doc.setFillColor(231, 240, 255);
+  doc.rect(14, y - 6, 182, 8, "F");
+  doc.setFontSize(10);
+  doc.text("Producto", 16, y - 1);
+  doc.text("Cant.", 118, y - 1);
+  doc.text("Precio", 138, y - 1);
+  doc.text("Subtotal", 170, y - 1);
+
+  y += 5;
   carritoAgrupado.forEach((item) => {
-    const linea = `${item.nombre} x${item.cantidad} - ${monedaGT.format(item.precio * item.cantidad)}`;
-    doc.text(linea, 14, y);
+    const subtotal = item.precio * item.cantidad;
+    doc.text(item.nombre.slice(0, 34), 16, y);
+    doc.text(String(item.cantidad), 120, y);
+    doc.text(formatearMoneda(item.precio), 138, y);
+    doc.text(formatearMoneda(subtotal), 170, y);
     y += 7;
   });
 
-  const total = carrito.reduce((acc, item) => acc + item.precio, 0);
-  doc.setFontSize(13);
-  doc.text(`Total pagado: ${monedaGT.format(total)}`, 14, y + 8);
+  // Línea de cierre y total final.
+  doc.setDrawColor(170, 180, 200);
+  doc.line(14, y + 1, 196, y + 1);
+  doc.setFontSize(12);
+  doc.setTextColor(12, 64, 130);
+  doc.text(`TOTAL PAGADO: ${formatearMoneda(total)}`, 14, y + 10);
+
+  // Nota de agradecimiento al pie del documento.
+  doc.setFontSize(9);
+  doc.setTextColor(90, 100, 120);
+  doc.text("Gracias por tu compra. Conserva este recibo para cualquier aclaracion.", 14, 285);
 
   doc.save("recibo-carrito.pdf");
 }
@@ -387,5 +531,7 @@ if (cerrarModal && visorImagen) {
 
 // Inicio de la app: tema, catálogo y carrito guardado.
 inicializarTema();
+inicializarFormatoCamposPago();
+inicializarMoneda();
 renderProductos();
 renderCarrito();
