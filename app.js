@@ -33,7 +33,7 @@ const productos = [
     id: 5,
     nombre: "SSD 1TB",
     precio: 899,
-    imagen: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=900&q=80",
+    imagen: "https://images.unsplash.com/photo-1531492746076-161ca9bcad58?auto=format&fit=crop&w=900&q=80",
     especificaciones: ["PCIe 4.0", "Lectura 7000 MB/s", "Escritura 5000 MB/s", "Formato M.2"]
   },
   {
@@ -218,7 +218,7 @@ function eliminarDelCarrito(idProducto) {
 
 // Aplica y guarda tema claro/oscuro para mantener preferencia del usuario.
 function inicializarTema() {
-  const temaGuardado = localStorage.getItem("tema-carrito") || "claro";
+  const temaGuardado = localStorage.getItem("tema-carrito") || "oscuro";
   document.body.dataset.theme = temaGuardado === "oscuro" ? "oscuro" : "claro";
 }
 
@@ -235,7 +235,10 @@ function abrirVistaPrevia(idProducto) {
   if (!producto || !imagenGrande || !tituloImagen || !especificacionesImagen || !visorImagen) return;
 
   imagenGrande.src = producto.imagen;
-  tituloImagen.textContent = `${producto.nombre} - ${monedaGT.format(producto.precio)}`;
+  imagenGrande.alt = `Imagen de ${producto.nombre}`;
+  // CORRECCION DEL TITULO: se fuerza el nombre/precio del producto seleccionado
+  // para evitar que el encabezado de la vista previa quede ambiguo o no coincida.
+  tituloImagen.textContent = `Producto: ${producto.nombre} | Precio: ${monedaGT.format(producto.precio)}`;
 
   especificacionesImagen.innerHTML = "";
   producto.especificaciones.forEach((especificacion) => {

@@ -1,54 +1,49 @@
-﻿/* Variables de color y sombra para tema claro */
+﻿/* Variables visuales del tema estilo gaming profesional */
 :root {
-  --fondo: linear-gradient(140deg, #f7f9ff, #dbe8ff);
-  --fondo-tarjeta: #ffffff;
-  --texto: #1a2533;
-  --texto-suave: #495a70;
-  --primario: #0b63f6;
-  --primario-hover: #004fd0;
-  --peligro: #cc2941;
-  --borde: #d0d8e6;
-  --sombra: 0 12px 28px rgba(21, 45, 80, 0.15);
+  --fondo: radial-gradient(circle at 15% 10%, #1a2438 0%, #0b111c 45%, #070c14 100%);
+  --fondo-tarjeta: rgba(16, 24, 40, 0.88);
+  --fondo-panel: rgba(10, 17, 30, 0.9);
+  --texto: #e6eefc;
+  --texto-suave: #95a7c7;
+  --primario: #00c2ff;
+  --primario-hover: #00a9de;
+  --peligro: #ff4d6d;
+  --borde: rgba(110, 139, 190, 0.35);
+  --borde-fuerte: rgba(0, 194, 255, 0.5);
+  --sombra: 0 18px 40px rgba(0, 0, 0, 0.45);
+  --resplandor: 0 0 0 1px rgba(0, 194, 255, 0.22), 0 0 24px rgba(0, 194, 255, 0.16);
 }
 
-/* Sobrescritura de variables para tema oscuro */
-body[data-theme="oscuro"] {
-  --fondo: linear-gradient(140deg, #0f172a, #111827);
-  --fondo-tarjeta: #1f2937;
-  --texto: #edf2ff;
-  --texto-suave: #ffffff;
-  --primario: #4d9cff;
-  --primario-hover: #3487f1;
-  --peligro: #ff5c77;
-  --borde: #374151;
-  --sombra: 0 12px 28px rgba(0, 0, 0, 0.35);
+/* Sobrescritura visual para tema claro */
+body[data-theme="claro"] {
+  --fondo: linear-gradient(155deg, #ecf3ff, #dce8ff 55%, #cfdcf5 100%);
+  --fondo-tarjeta: rgba(255, 255, 255, 0.95);
+  --fondo-panel: rgba(250, 252, 255, 0.96);
+  --texto: #1a2a45;
+  --texto-suave: #4f6180;
+  --primario: #0a63f4;
+  --primario-hover: #004fcb;
+  --peligro: #cf2c48;
+  --borde: rgba(76, 105, 156, 0.3);
+  --borde-fuerte: rgba(10, 99, 244, 0.4);
+  --sombra: 0 16px 30px rgba(19, 47, 94, 0.2);
+  --resplandor: 0 0 0 1px rgba(10, 99, 244, 0.2), 0 0 18px rgba(10, 99, 244, 0.16);
 }
 
-/* Ajuste global del box-model */
 * {
   box-sizing: border-box;
 }
 
-/* Base del documento */
+/* Base general */
 body {
   margin: 0;
   min-height: 100vh;
   font-family: "Space Grotesk", sans-serif;
   background: var(--fondo);
   color: var(--texto);
-  padding: 20px;
+  padding: 22px;
 }
 
-/* Barra superior */
-.encabezado {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-/* Limpieza de márgenes en elementos de texto */
 h1,
 h2,
 h3,
@@ -56,57 +51,98 @@ p {
   margin: 0;
 }
 
+/* Encabezado con look de barra superior gamer */
+.encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(18, 29, 50, 0.9), rgba(9, 16, 28, 0.9));
+  box-shadow: var(--sombra);
+}
+
+body[data-theme="claro"] .encabezado {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(239, 245, 255, 0.94));
+}
+
+.encabezado h1 {
+  letter-spacing: 0.3px;
+}
+
 .encabezado p {
-  margin-top: 6px;
+  margin-top: 5px;
   color: var(--texto-suave);
 }
 
-/* Layout principal de 2 columnas */
+/* Estructura principal */
 .contenedor-principal {
   display: grid;
-  gap: 18px;
+  gap: 16px;
   grid-template-columns: 2fr 1fr;
 }
 
-/* Tarjetas contenedoras de cada sección */
+/* Contenedores base */
 .seccion-productos,
 .seccion-carrito {
-  background: var(--fondo-tarjeta);
   border: 1px solid var(--borde);
   border-radius: 16px;
   box-shadow: var(--sombra);
-  padding: 18px;
+  padding: 16px;
+  backdrop-filter: blur(6px);
 }
 
-/* Grid de productos responsive */
+.seccion-productos {
+  background: var(--fondo-tarjeta);
+}
+
+.seccion-carrito {
+  background: var(--fondo-panel);
+  box-shadow: var(--sombra), var(--resplandor);
+}
+
+/* Catálogo en grilla */
 .grid-productos {
   margin-top: 14px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 13px;
 }
 
-/* Tarjeta individual de producto */
 .tarjeta-producto {
   border: 1px solid var(--borde);
   border-radius: 14px;
   overflow: hidden;
-  background: var(--fondo-tarjeta);
+  background: linear-gradient(180deg, rgba(21, 31, 49, 0.9), rgba(12, 20, 34, 0.95));
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body[data-theme="claro"] .tarjeta-producto {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(240, 247, 255, 0.95));
+}
+
+.tarjeta-producto:hover {
+  transform: translateY(-2px);
+  border-color: var(--borde-fuerte);
+  box-shadow: 0 8px 22px rgba(0, 194, 255, 0.18);
 }
 
 .tarjeta-producto img {
   width: 100%;
-  height: 140px;
+  height: 146px;
   object-fit: cover;
   cursor: zoom-in;
 }
 
 .info-producto {
-  padding: 12px;
+  padding: 11px;
   display: grid;
-  gap: 8px;
+  gap: 7px;
 }
 
 .nombre-producto {
@@ -116,14 +152,19 @@ p {
 
 .detalle-producto {
   color: var(--texto-suave);
-  font-size: 0.9rem;
+  font-size: 0.86rem;
 }
 
 .precio-producto {
-  color: var(--texto-suave);
+  color: #74d8ff;
+  font-weight: 700;
 }
 
-/* Estilo base para botones */
+body[data-theme="claro"] .precio-producto {
+  color: #005fd6;
+}
+
+/* Botones */
 .boton-primario,
 .boton-secundario,
 .boton-peligro {
@@ -136,12 +177,17 @@ p {
 }
 
 .boton-primario {
-  background: var(--primario);
-  color: #fff;
+  background: linear-gradient(135deg, var(--primario), #00e3ff);
+  color: #03131d;
+}
+
+body[data-theme="claro"] .boton-primario {
+  background: linear-gradient(135deg, var(--primario), #62a6ff);
+  color: #ffffff;
 }
 
 .boton-primario:hover {
-  background: var(--primario-hover);
+  background: linear-gradient(135deg, var(--primario-hover), var(--primario));
 }
 
 .boton-secundario {
@@ -150,12 +196,16 @@ p {
   border: 1px solid var(--borde);
 }
 
+.boton-secundario:hover {
+  border-color: var(--borde-fuerte);
+}
+
 .boton-peligro {
   background: var(--peligro);
   color: #fff;
 }
 
-/* Lista visual del carrito */
+/* Carrito */
 .lista-carrito {
   margin: 12px 0 0;
   padding: 0;
@@ -171,6 +221,11 @@ p {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 8px;
+  background: rgba(8, 14, 24, 0.45);
+}
+
+body[data-theme="claro"] .item-carrito {
+  background: rgba(255, 255, 255, 0.65);
 }
 
 .item-carrito button {
@@ -182,14 +237,13 @@ p {
   padding: 6px 8px;
 }
 
-/* Zona de total y acciones */
 .resumen {
   margin-top: 14px;
   display: grid;
   gap: 8px;
 }
 
-/* Formulario de pago */
+/* Formulario */
 .formulario-pago {
   margin-top: 16px;
   display: grid;
@@ -199,10 +253,20 @@ p {
 .formulario-pago input {
   border: 1px solid var(--borde);
   border-radius: 8px;
-  background: transparent;
+  background: rgba(8, 14, 24, 0.45);
   color: var(--texto);
   padding: 10px;
   font-family: inherit;
+}
+
+body[data-theme="claro"] .formulario-pago input {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.formulario-pago input:focus {
+  outline: none;
+  border-color: var(--borde-fuerte);
+  box-shadow: 0 0 0 2px rgba(0, 194, 255, 0.16);
 }
 
 .fila {
@@ -211,37 +275,42 @@ p {
   gap: 10px;
 }
 
-/* Modal de vista previa */
+/* Modal */
 .modal-imagen {
-  border: 0;
+  border: 1px solid var(--borde-fuerte);
   border-radius: 14px;
   padding: 0;
-  width: min(680px, 92vw);
+  width: min(700px, 93vw);
+  background: transparent;
 }
 
 .modal-imagen::backdrop {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 8, 20, 0.72);
 }
 
 .modal-contenido {
   position: relative;
-  background: var(--fondo-tarjeta);
+  background: linear-gradient(170deg, rgba(19, 31, 52, 0.96), rgba(9, 16, 28, 0.96));
   padding: 16px;
+}
+
+body[data-theme="claro"] .modal-contenido {
+  background: linear-gradient(170deg, rgba(255, 255, 255, 0.98), rgba(242, 247, 255, 0.98));
 }
 
 .modal-contenido img {
   width: 100%;
   border-radius: 10px;
-  max-height: 70vh;
+  max-height: 68vh;
   object-fit: cover;
 }
 
 .modal-contenido p {
-  margin-top: 8px;
+  margin-top: 10px;
   font-weight: 700;
+  color: var(--texto);
 }
 
-/* Lista de especificaciones técnicas mostrada en la vista previa */
 .lista-especificaciones {
   margin: 10px 0 0;
   padding-left: 18px;
@@ -251,7 +320,7 @@ p {
 }
 
 .lista-especificaciones li {
-  line-height: 1.25;
+  line-height: 1.3;
 }
 
 .cerrar-modal {
@@ -263,10 +332,21 @@ p {
   width: 34px;
   height: 34px;
   cursor: pointer;
+  background: rgba(255, 255, 255, 0.92);
+  font-weight: 700;
 }
 
-/* Ajustes para móviles */
+/* Responsive */
 @media (max-width: 900px) {
+  body {
+    padding: 14px;
+  }
+
+  .encabezado {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .contenedor-principal {
     grid-template-columns: 1fr;
   }
